@@ -23,5 +23,5 @@ class Deck:
 
     def get_deck(self):
         global cards
-        random.shuffle(cards)
+        # random.shuffle(cards)
         return cards

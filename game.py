@@ -3,19 +3,11 @@ from card import Deck
 ranks = [i for i in range(2, 11)] + ['JACK', 'QUEEN', 'KING', 'ACE']
 suits = ['DIAMONDS', 'HEARTS', 'SPADES', 'CLUBS']
 values = {
-    '2': 2,
-    '3': 3,
-    '4': 4,
-    '5': 5,
-    '6': 6,
-    '7': 7,
-    '8': 8,
-    '9': 9,
-    '10': 10,
     'JACK': 11,
     'QUEEN': 12,
     'KING': 13,
-    'ACE': 11
+    'ACE': 11,
+    'ACE(1)': 1
 }
 
 
@@ -51,8 +43,43 @@ def game():
 
 
 def calc_total(hand):
-    pass  # TODO: Calculate the total value regardless of hand size
+    """
+    :param list 'hand': list of Card objects
+    """
+    # Initial calculation of total
+    total = 0
+    for card in hand:
+        total += values.get(card.rank, card.rank)
+    # Check if bust & ACE
+    indexes = aces(hand)
+    if total > 21 and indexes:
+        hand[indexes[0]].rank = 'ACE(1)'
+        return calc_total(hand)
+    else:
+        return total, hand
 
 
-if __name__ == '__main__':
-    game()
+def aces(hand):
+    """
+    :param list 'hand': list of Card objects
+    """
+    indexes = []
+    for i, card in enumerate(hand):
+        if card.rank == 'ACE':
+            indexes.append(i)
+    return indexes
+
+
+# Test calc_total method
+deck = Deck(ranks, suits)
+shuffled_deck = deck.get_deck()
+dealer_hand = [shuffled_deck[0], shuffled_deck[1]]
+player_hand = [shuffled_deck[51], shuffled_deck[50]]
+total, hand = calc_total(player_hand)
+print(total)
+print(hand[0].rank)
+print(hand[1].rank)
+
+
+# if __name__ == '__main__':
+#     game()
