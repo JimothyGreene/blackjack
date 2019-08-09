@@ -51,7 +51,7 @@ def game():
 
 
 def calc_total(hand):
-    pass
+    pass  # TODO: Calculate the total value regardless of hand size
 
 
 if __name__ == '__main__':
