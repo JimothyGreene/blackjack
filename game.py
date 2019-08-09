@@ -31,12 +31,16 @@ def game():
         # Print the current hands
         print(f'Your hand: [{player_hand[0]}, {player_hand[1]}]')
         player_sum = calc_total(player_hand)
+        is_in = False if player_sum > 21 else True
         print(f"Dealer's hand: [{dealer_hand[0]}, HIDDEN]")
         dealer_sum = calc_total(dealer_hand)
 
         # Ask for hit
-        print('Hit? (y/n)')
-        wants_hit = True if input() == 'y' else False
+        if is_in:
+            print('Hit? (y/n)')
+            wants_hit = True if input() == 'y' else False
+        else:
+            print('You have already busted! Ouch...')
 
         # While the player wants to be hit
         num_hits = 0
@@ -44,6 +48,8 @@ def game():
             card_pos = hit(player_hand, shuffled_deck, card_pos)
             num_hits += 1
             player_sum = calc_total(player_hand)
+            print('Your hand: ')
+            show_hand(player_hand)
             is_in = True if player_sum < 22 else False
             if is_in:
                 print('Hit? (y/n)')
@@ -57,17 +63,19 @@ def game():
             show_hand(dealer_hand)
             hit(dealer_hand, shuffled_deck, card_pos, num_hits)
             dealer_sum = calc_total(dealer_hand)
+            dealer_bust = True if dealer_sum > 21 else False
 
             # Compare values
             print(f"Your total: {player_sum}")
             print(f"Dealer's total: {dealer_sum}")
-            if player_sum >= dealer_sum:
+            if player_sum >= dealer_sum or dealer_bust:
                 win_count += 1
                 print(f'You win! You now have {win_count} wins')
             else:
                 print(f'Dealer wins! You still have {win_count} wins')
 
         # Asks if player still wants to play
+        print(f'You have {win_count} wins.')
         print('Would you like to play another round? (y/n)')
         if input() == 'y':
             wants_play = True
@@ -113,8 +121,6 @@ def aces(hand):
 def hit(hand, deck, pos, max_hits=None):
     if max_hits is None:  # For the player hitting
         hand.append(deck[pos])
-        print('Your hand: ')
-        show_hand(hand)
         pos += 1
         return pos
     else:
