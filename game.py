@@ -3,9 +3,9 @@ from card import Deck
 ranks = [i for i in range(2, 11)] + ['JACK', 'QUEEN', 'KING', 'ACE']
 suits = ['DIAMONDS', 'HEARTS', 'SPADES', 'CLUBS']
 values = {
-    'JACK': 11,
-    'QUEEN': 12,
-    'KING': 13,
+    'JACK': 10,
+    'QUEEN': 10,
+    'KING': 10,
     'ACE': 11,
     'ACE(1)': 1
 }
